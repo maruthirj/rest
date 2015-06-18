@@ -1,0 +1,84 @@
+<!DOCTYPE>
+<html ng-app="Airlines">
+<head>
+<link rel="stylesheet" href="styles/bootstrap.css" />
+<style type="text/css">
+.ng-invalid.ng-dirty {
+	border-color: red;
+}
+.ng-valid.ng-dirty {
+	border-color: green;
+}
+</style>
+<script type="text/javascript" src="scripts/jquery-2.1.3.js"></script>
+<script type="text/javascript" src="scripts/angular.js"></script>
+<script type="text/javascript" src="scripts/angular-resource.js"></script>
+<script type="text/javascript" src="scripts/app-12.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="col-md-4 col-sm-6 col-xs-12">
+			<h2>Users</h2>
+			<div ng-controller="UserController as userController">
+				<div ng-show="loading"><img src="images/loading.gif"></img></div>
+				<input type="text" ng-model="searchName">
+				<!--  <input type="text" ng-model="searchUser.name">  -->
+				<table style="width: 100%">
+					<!--  <tr ng-repeat="user in users | filter:searchUser" style="background-color: {{user | colorCodeAge}}"> -->
+					<tr ng-repeat="user in users | userNameFilter:searchName" style="background-color: {{user | colorCodeAge}}">
+						<td>{{user.name}}</td>
+						<td>{{user.age}}</td>
+						<td>{{user.joinDate | date:'yyyy-MM-dd'}}</td>
+						<td><a href='#' ng-click="editUser(user)">Edit</a></td>
+						<td><a href='#' ng-click="deleteUser(user)">Del</a></td>
+					</tr>
+				</table>
+				{{error}}
+				Showing {{users.length}} users
+				<input type="button" value="Add User" ng-click="showAddForm=true"></input>
+				<div ng-show="showAddForm || showEditForm">
+					<form name="userForm" novalidate>
+						<input type="text" name="name" ng-model="user.name" required></input>
+						<span style="color:red" ng-show="userForm.name.$dirty && userForm.name.$invalid">
+		  					<span ng-show="userForm.name.$error.required">Username is required.</span>
+		  				</span>
+						<input type="number" name="age" ng-model="user.age"></input>
+						<span style="color:red" ng-show="userForm.age.$dirty && userForm.age.$invalid">
+		  					<span ng-show="userForm.age.$error.required">Age is required.</span>
+		  				</span>
+						<input type="date" name="joinDate" ng-model="user.joinDate"></input>
+						<span style="color:red" ng-show="userForm.joinDate.$dirty && userForm.joinDate.$invalid">
+		  					<span ng-show="userForm.joinDate.$error.required">Age is required.</span>
+		  				</span>
+						<span style="color:red" ng-show="userForm.name.$dirty && myForm.name.$invalid">
+		  					<span ng-show="myForm.name.$error.required">Username is required.</span>
+		  				</span>
+						<input type="button" value="Cancel" ng-click="showAddForm=false"></input>
+						<input type="button" value="Update" ng-show="showEditForm" ng-disabled="!userForm.$valid" ng-click="userForm.$valid && updateUser(user)"></input>
+						<input type="button" value="Save" ng-show="showAddForm" ng-disabled="!userForm.$valid" ng-click="userForm.$valid && addUser(user)"></input>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div ng-controller="ProductController as productController">
+			<div class="col-md-4 col-sm-6 col-xs-12">
+				<div ng-show="loadingProducts"><img src="images/loading.gif"></img></div>
+				<div ng-repeat="prod in products">
+					<!--  <div ng-include="'templates/product.html'"></div> -->
+					<product product="prod"></product>
+				</div>
+				<br>
+				{{errorProducts}}
+				Showing {{products.length}} products
+			</div>
+			<div class="col-md-4 col-sm-6 col-xs-12">
+				<shopping-cart products="products">
+					<div ng-repeat="prod in products">
+						<product product="prod"></product>
+					</div>
+				</shopping-cart>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
