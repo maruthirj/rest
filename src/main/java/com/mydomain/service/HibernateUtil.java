@@ -6,6 +6,9 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+/*
+ * Util class for hibernate connections
+ */
 public class HibernateUtil {
 
 	private static SessionFactory sesFac = null;
